@@ -7,7 +7,7 @@ import requests
 from datetime import timedelta
 
 # Initialize Google Maps client
-API_KEY = "AIzaSyCHxPrLdGUOU4kWdHhoU7MFmWqidRe62Sc"  # Replace with your actual API key, stored securely in an environment variable
+API_KEY = "API_KEY"  # Replace with your actual API key, stored securely in an environment variable
 gmaps = googlemaps.Client(key=API_KEY)
 
 # Sidewalk safety and accessibility color mapping
