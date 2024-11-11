@@ -19,7 +19,7 @@ openai.api_key = "API_KEY_HERE"  # Replace with your actual API key
 
 
 # Initialize Google Maps client
-API_KEY = "GOOGLE_API_KEY"  # Replace with your actual Google API key
+API_KEY = "GOOGLE_API_KEY"# Replace with your actual Google API key
 gmaps = googlemaps.Client(key=API_KEY)
 
 
@@ -178,7 +178,7 @@ tab1, tab2, tab3 = st.tabs(["Route", "Hazard Reporting and Management", "Actiona
 
 # Tab 1: Route
 with tab1:
-    st.title("Route Map, Directions, and Sidewalk Safety Information for Pedestrians")
+    st.subheader("Route Map, Directions, and Sidewalk Safety Information for Pedestrians")
     
     if 'start_location' not in st.session_state:
         st.session_state.start_location = ""
@@ -186,7 +186,7 @@ with tab1:
         st.session_state.end_location = ""
 
 
-    start_location_input = st.text_input("Enter the start location:", value=st.session_state.start_location)
+    start_location_input = st.text_input("Enter the start location or start typing address/location name and press enter for suggestions:", value=st.session_state.start_location)
     if start_location_input:
         autocomplete_results = autocomplete_places(start_location_input)
         if autocomplete_results.get("predictions"):
@@ -196,7 +196,7 @@ with tab1:
                     st.session_state.start_location = prediction['description']
 
 
-    end_location_input = st.text_input("Enter the end location:", value=st.session_state.end_location)
+    end_location_input = st.text_input("Enter the end location or start typing address/location name and press enter for suggestions:", value=st.session_state.end_location)
     if end_location_input:
         autocomplete_results = autocomplete_places(end_location_input)
         if autocomplete_results.get("predictions"):
@@ -266,7 +266,7 @@ with tab2:
         description = st.text_input("Describe the hazard")
         severity = st.selectbox("Select severity level", ["Low", "Moderate", "High", "Severe"])
         accessibility = st.selectbox("Accessibility Level", list(accessibility_colors.keys()))
-        location = st.text_input("Location (address or coordinates)")
+        location = st.text_input("Location (Address)")
         uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
         submitted = st.form_submit_button("Submit Report")
     
@@ -308,7 +308,7 @@ with tab2:
                 st.warning("This hazard has already been reported.")
     
     # Display reports with images column
-    st.subheader("Current Sidewalk Hazards")
+    st.subheader("Sidewalk Hazards:")
     current_hazards = data[data["Status"].isin(["Not Started", "In Progress"])]
     archived_hazards = data[data["Status"] == "Completed"]
 
@@ -316,7 +316,7 @@ with tab2:
     st.subheader("Current Hazards")
     display_report_table(current_hazards)
     
-    st.subheader("Archived Hazards")
+    st.subheader("Archived/Completed Hazards")
     display_report_table(archived_hazards)
     
     # Manage report status section
@@ -338,7 +338,7 @@ with tab2:
 
 # Tab 3: Actionable Proposals
 with tab3:
-    st.subheader("Actionable Proposals for City")
+    st.subheader("Actionable Proposals for City To Address Hazards")
     hazard_options = data[["Hazard_ID", "Description", "Address"]].apply(
         lambda row: f"Hazard {row['Hazard_ID']} - {row['Description']} at {row['Address']}", axis=1
     )
@@ -350,7 +350,7 @@ with tab3:
         selected_row = data[data["Hazard_ID"] == hazard_id].iloc[0]
 
 
-        st.write("Proposed Actions:")
+        st.subheader("Proposed Actions:")
         hazard_description = selected_row["Description"]
 
 
