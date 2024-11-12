@@ -1,1 +1,11 @@
+openai
+streamlit
+folium
+streamlit_folium
+googlemaps
+polyline
+requests
+pandas
+pillow
+gtts
 
