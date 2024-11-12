@@ -1,0 +1,14 @@
+openai
+streamlit
+folium
+streamlit_folium
+googlemaps
+polyline
+requests
+datetime
+random
+pandas
+Image
+os
+re
+gTTS
