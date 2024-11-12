@@ -15,11 +15,11 @@ from gtts import gTTS
 
 
 # Set up OpenAI API key
-openai.api_key = "API_KEY_HERE"  # Replace with your actual API key
+openai.api_key = "OPENAI_API_KEY"  # Replace with your actual API key
 
 
 # Initialize Google Maps client
-API_KEY = "GOOGLE_API_KEY"# Replace with your actual Google API key
+API_KEY = "GOOGLE_MAPS_API_KEY"# Replace with your actual Google API key
 gmaps = googlemaps.Client(key=API_KEY)
 
 
