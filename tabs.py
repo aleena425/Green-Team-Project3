@@ -23,6 +23,10 @@ API_KEY = "GOOGLE_API_KEY"# Replace with your actual Google API key
 gmaps = googlemaps.Client(key=API_KEY)
 
 
+st.title("Street Smart")
+st.image("StreetSmartLogo.png", width=200)
+
+
 # Sidewalk safety and accessibility color mapping
 accessibility_colors = {
     "Easily Accessible": "#32CD32",
