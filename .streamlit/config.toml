@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#D08965"  # Terracotta
+backgroundColor = "#F7F4E9"  # Light Beige
+secondaryBackgroundColor = "#EDE6D5"  # Soft Taupe
+textColor = "000000"  # Blackfor readability
+font = "sans serif"
