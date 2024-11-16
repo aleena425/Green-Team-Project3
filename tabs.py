@@ -12,26 +12,45 @@ from PIL import Image
 import os
 import re
 from gtts import gTTS
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+import streamlit as st
 
-# Set up OpenAI API key
-openai.api_key = "OPENAI_API_KEY"  # Replace with your actual API key
+# Set the layout to wide mode
+st.set_page_config(layout="wide")
 
+# Add custom CSS for left alignment
+st.markdown(
+    """
+    <style>
+    .main {
+        max-width: 100%;
+        margin: 0;
+        padding-left: 20px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Initialize Google Maps client
-API_KEY = "GOOGLE_MAPS_API_KEY"# Replace with your actual Google API key
+# Define your Google Maps API key
+API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 gmaps = googlemaps.Client(key=API_KEY)
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
+
+st.image("StreetSmart.png", width=250)
 st.title("Street Smart")
-st.image("StreetSmartLogo.png", width=200)
-
+st.write("Welcome to Street Smart! This app helps you navigate pedestrian routes and report sidewalk hazards.")
 
 # Sidewalk safety and accessibility color mapping
 accessibility_colors = {
     "Easily Accessible": "#32CD32",
     "Moderately Accessible": "#1E90FF",
-    "Challenging": "#FFD700",
+    "Challenging": "#800080",
     "Inaccessible": "#FF6347"
 }
 
@@ -182,13 +201,12 @@ tab1, tab2, tab3 = st.tabs(["Route", "Hazard Reporting and Management", "Actiona
 
 # Tab 1: Route
 with tab1:
-    st.subheader("Route Map, Directions, and Sidewalk Safety Information for Pedestrians")
-    
+    st.subheader("Pedestrian Route & Sidewalk Safety Info")
+
     if 'start_location' not in st.session_state:
         st.session_state.start_location = ""
     if 'end_location' not in st.session_state:
         st.session_state.end_location = ""
-
 
     start_location_input = st.text_input("Enter the start location or start typing address/location name and press enter for suggestions:", value=st.session_state.start_location)
     if start_location_input:
@@ -199,7 +217,6 @@ with tab1:
                 if st.button(prediction['description'], key=f"start-{prediction['place_id']}"):
                     st.session_state.start_location = prediction['description']
 
-
     end_location_input = st.text_input("Enter the end location or start typing address/location name and press enter for suggestions:", value=st.session_state.end_location)
     if end_location_input:
         autocomplete_results = autocomplete_places(end_location_input)
@@ -209,18 +226,27 @@ with tab1:
                 if st.button(prediction['description'], key=f"end-{prediction['place_id']}"):
                     st.session_state.end_location = prediction['description']
 
-
+    # Button to fetch route info
     if st.button("Get Route Information"):
         fetch_route_info()
 
-
+    # Check if the route information has been fetched before displaying the color-coded key and map
     if 'route' in st.session_state:
+        # Color-Coded Key for Accessibility Levels
+        st.subheader("Color-Coded Key for Accessibility Levels")
+        st.write(f"""
+                    <span style="color: #32CD32;">- **Green (Easily Accessible):**</span> Safe, smooth, and easy-to-navigate sidewalks. <br>
+                    <span style="color: #1E90FF;">- **Blue (Moderately Accessible):**</span> Sidewalks with minor obstacles but generally walkable. <br>
+                    <span style="color: #800080;">- **Purple (Challenging):**</span> Sidewalks with significant obstacles or uneven surfaces. <br>
+                    <span style="color: #FF6347;">- **Red (Inaccessible):**</span> Sidewalks that are not passable due to major obstacles or damage.
+                """, unsafe_allow_html=True)
+
         route_data = st.session_state['route']
         duration_text = str(timedelta(seconds=st.session_state['duration']))
         steps = st.session_state['steps']
         route_reasons = st.session_state['reasons']
 
-
+        # Display the map after fetching the route
         m = folium.Map(location=route_data[0][0], zoom_start=14)
         for lat_lng, accessibility_level in route_data:
             folium.CircleMarker(
@@ -230,42 +256,45 @@ with tab1:
                 fill=True
             ).add_to(m)
 
-
         st_folium(m, width=700, height=500)
-
 
         st.subheader("Route Safety Information")
         st.write(f"Estimated walking time: {duration_text}")
 
-
-        st.subheader("Color-Coded Key for Accessibility Levels")
-        st.write(f"""
-            <span style="color: #32CD32;">- **Green (Easily Accessible):**</span> Safe, smooth, and easy-to-navigate sidewalks. <br>
-            <span style="color: #1E90FF;">- **Blue (Moderately Accessible):**</span> Sidewalks with minor obstacles but generally walkable. <br>
-            <span style="color: #FFD700;">- **Yellow (Challenging):**</span> Sidewalks with significant obstacles or uneven surfaces. <br>
-            <span style="color: #FF6347;">- **Red (Inaccessible):**</span> Sidewalks that are not passable due to major obstacles or damage.
-        """, unsafe_allow_html=True)
-
-
         st.subheader("Step-by-Step Directions with Reasons for Route Selection")
-        for i, (step, reason) in enumerate(zip(steps, route_reasons), 1):
+
+        # Initialize the step if it is not in session_state
+        if 'current_step' not in st.session_state:
+            st.session_state.current_step = 0
+
+        # Show the current step's information
+        if st.session_state.current_step < len(steps):
+            step = steps[st.session_state.current_step]
+            reason = route_reasons[st.session_state.current_step]
             distance = step["distance"]["text"]
             duration = step["duration"]["text"]
             instructions = step["html_instructions"]
-            st.markdown(f"**Step {i}:** {instructions} - **{distance}**, ~{duration}", unsafe_allow_html=True)
+            st.markdown(f"**Step {st.session_state.current_step + 1}:** {instructions} - **{distance}**, ~{duration}", unsafe_allow_html=True)
             if reason:
                 st.write(f"**Reason for this part of the route:** {reason}")
-            tts_text = f"Step {i}: {instructions}. Estimated distance is {distance}, and estimated time is {duration}."
+
+            # Convert text to speech for the current step
+            tts_text = f"Step {st.session_state.current_step + 1}: {instructions}. Estimated distance is {distance}, and estimated time is {duration}."
             if reason:
                 tts_text += f" The original route had an issue: {reason}. This route is better for you."
             speak_text(tts_text)
 
+            # Navigation buttons to go to the next step
+            col1, col2 = st.columns(2)
+            if col1.button("Previous", disabled=st.session_state.current_step == 0):
+                st.session_state.current_step -= 1
+            if col2.button("Next", disabled=st.session_state.current_step == len(steps) - 1):
+                st.session_state.current_step += 1
 
-# Tab 2: Hazard Reporting, Display Reports with Image Column, and Manage Report Status
+### Feature 2: Hazard Reporting ###
 with tab2:
     st.subheader("Report a Sidewalk Hazard")
     
-    # Form to handle hazard report submission
     with st.form("report_form"):
         description = st.text_input("Describe the hazard")
         severity = st.selectbox("Select severity level", ["Low", "Moderate", "High", "Severe"])
@@ -274,22 +303,15 @@ with tab2:
         uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
         submitted = st.form_submit_button("Submit Report")
     
-    # Check if form is submitted and handle the hazard report submission
     if submitted:
-        if not description or not severity or not accessibility or not location:
-            st.error("Please fill out all required fields (Description, Severity Level, Accessibility Level, and Location).")
-        else:
+        if description and severity and accessibility and location:
             image_path = None
             if uploaded_image:
                 image_dir = "uploaded_images"
-                if not os.path.exists(image_dir):
-                    os.makedirs(image_dir)
+                os.makedirs(image_dir, exist_ok=True)
                 image_path = os.path.join(image_dir, uploaded_image.name)
                 Image.open(uploaded_image).convert("RGB").save(image_path)
             
-            # Add report data and save it
-            date_of_report = datetime.now().strftime("%Y-%m-%d")
-            time_of_report = datetime.now().strftime("%H:%M:%S")
             new_report = pd.DataFrame({
                 "Hazard_ID": [len(data) + 1],
                 "Description": [description],
@@ -297,71 +319,53 @@ with tab2:
                 "Accessibility": [accessibility],
                 "Address": [location],
                 "Image_Path": [image_path],
-                "Date": [date_of_report],
-                "Time": [time_of_report],
+                "Date": [datetime.now().strftime("%Y-%m-%d")],
+                "Time": [datetime.now().strftime("%H:%M:%S")],
                 "Status": ["Not Started"]
             })
             
-            # Ensure no duplicate reports
             if not ((data["Description"] == description) & (data["Address"] == location)).any():
                 data = pd.concat([data, new_report], ignore_index=True)
                 data.to_csv(dataset_path, index=False)
-                data = load_data()  # Reload data after saving
+                data = load_data()
                 st.success("Hazard report submitted!")
             else:
                 st.warning("This hazard has already been reported.")
-    
-    # Display reports with images column
-    st.subheader("Sidewalk Hazards:")
-    current_hazards = data[data["Status"].isin(["Not Started", "In Progress"])]
-    archived_hazards = data[data["Status"] == "Completed"]
+        else:
+            st.error("Please fill out all required fields.")
 
+### Feature 3: Hazard Management ###
+with tab3:
+    st.subheader("Completed Hazards")
+    display_report_table(data[data["Status"] == "Completed"])
 
     st.subheader("Current Hazards")
-    display_report_table(current_hazards)
-    
-    st.subheader("Archived/Completed Hazards")
-    display_report_table(archived_hazards)
-    
-    # Manage report status section
+    display_report_table(data[data["Status"].isin(["Not Started", "In Progress"])])
+
     st.subheader("Manage Report Status")
     report_options = data["Hazard_ID"].astype(str) + " - " + data["Description"]
-    selected_report = st.selectbox("Select Report", options=report_options, key="selected_report")
+    selected_report = st.selectbox("Select Report", options=report_options)
     
-    # Handle report status change
     if selected_report:
         selected_hazard_id = int(selected_report.split(" - ")[0])
-        new_status = st.selectbox("Change Status for Selected Report", ["Not Started", "In Progress", "Completed"], key="new_status")
-        
+        new_status = st.selectbox("Change Status", ["Not Started", "In Progress", "Completed"])
         if st.button("Update Status"):
             data.loc[data["Hazard_ID"] == selected_hazard_id, "Status"] = new_status
             data.to_csv(dataset_path, index=False)
-            data = load_data()  # Reload data after updating
+            data = load_data()
             st.success("Status updated successfully!")
 
-
-# Tab 3: Actionable Proposals
-with tab3:
-    st.subheader("Actionable Proposals for City To Address Hazards")
-    hazard_options = data[["Hazard_ID", "Description", "Address"]].apply(
-        lambda row: f"Hazard {row['Hazard_ID']} - {row['Description']} at {row['Address']}", axis=1
-    )
-    selected_hazard = st.selectbox("Select a hazard to generate a proposal:", options=hazard_options)
-
-
+    st.subheader("Generate Actionable Proposal")
+    hazard_options = data[["Hazard_ID", "Description", "Address"]].apply(lambda row: f"Hazard {row['Hazard_ID']} - {row['Description']} at {row['Address']}", axis=1)
+    selected_hazard = st.selectbox("Select a hazard for proposal:", options=hazard_options)
+    
     if selected_hazard:
         hazard_id = int(selected_hazard.split()[1])
         selected_row = data[data["Hazard_ID"] == hazard_id].iloc[0]
-
-
-        st.subheader("Proposed Actions:")
         hazard_description = selected_row["Description"]
-
-
+        
         project_plan, estimated_budget = generate_project_plan_and_budget(hazard_description)
         st.write(project_plan)
-
-
         if estimated_budget:
             st.subheader("Estimated Budget")
             st.write(f"The estimated budget to fix this issue is {estimated_budget}.")
