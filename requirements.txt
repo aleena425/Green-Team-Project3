@@ -1,11 +1,11 @@
 openai
 streamlit
 folium
-streamlit_folium
+streamlit-folium
 googlemaps
 polyline
 requests
 pandas
-pillow
-gtts
-
+Pillow
+gTTS
+python-dotenv
