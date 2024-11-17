@@ -93,7 +93,7 @@ def generate_project_plan_and_budget(hazard_description):
         4. Equipment or materials needed.
         5. An estimated budget.
         """
-        response = openai.Chat.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
