@@ -369,3 +369,4 @@ with tab3:
         if estimated_budget:
             st.subheader("Estimated Budget")
             st.write(f"The estimated budget to fix this issue is {estimated_budget}.")
+
