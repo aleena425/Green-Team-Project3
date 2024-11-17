@@ -1,19 +1,15 @@
 Hazard_ID,Description,Severity_Level,Accessibility,Start_Latitude,Start_Longitude,End_Latitude,End_Longitude,Address,Latitude,Longitude,Image_Path,Timestamp,Status,Report_Date,Date,Time
-1,Construction,High,Challenging,,,,,3633 Sawtooth Ct San Jose CA,,,uploaded_images/image.png,,Not Started,,2024-11-09,17:07:10
-2,Uneven Pavement,Low,Moderately Accessible,,,,,451 Shadow Rock Ct San Jose CA,,,,,In Progress,,2024-11-09,17:11:22
-3,Pothole,Moderate,Moderately Accessible,,,,,664 N Capitol Ave San Jose ,,,,,Not Started,,2024-11-09,17:25:04
-4,Flooding on Sidewalk ,Severe,Inaccessible,,,,,3633 Sawtooth Ct San Jose CA,,,,,In Progress,,2024-11-09,17:37:08
-5,Uneven Pavement ,Low,Easily Accessible,,,,,451 Shadow Rock Ct San Jose,,,,,In Progress,,2024-11-09,17:44:09
-6,Construction,High,Inaccessible,,,,,664 N Capitol Ave San Jose ,,,uploaded_images/construction.jpeg,,Not Started,,2024-11-10,10:26:56
-7,Pothole,Low,Easily Accessible,,,,,664 N Capitol Ave San Jose,,,,,Not Started,,2024-11-10,10:34:10
-8,Pothole,Low,Easily Accessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,10:48:02
-9,Uneven Pavement,Low,Easily Accessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,11:01:56
-10,Construction,Severe,Inaccessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/construction.jpeg,,Not Started,,2024-11-10,11:21:58
-11,Construction,Severe,Inaccessible,,,,,664 Capital Ave San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,11:44:56
-12,Flooding,Severe,Inaccessible,,,,,3633 Sawtooth Ct San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,11:56:48
-13,Uneven Pavement,Severe,Inaccessible,,,,,451 Shadow Rock Ct San Jose,,,uploaded_images/image.png,,Completed,,2024-11-11,13:40:20
-14,Uneven Pavement ,Low,Moderately Accessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/image.png,,Completed,,2024-11-11,14:32:12
-15,Construction ,Moderate,Moderately Accessible,,,,,688 Enright Ave Santa Clara,,,uploaded_images/construction.jpeg,,Completed,,2024-11-11,18:45:17
-16,Construction,High,Inaccessible,,,,,451 Shadow Rock Ct San Jose,,,uploaded_images/construction.jpeg,,Completed,,2024-11-11,19:43:47
-17,Pothole,Moderate,Moderately Accessible,,,,,451 Shadow Rock Ct San Jose,,,uploaded_images/construction.jpeg,,In Progress,,2024-11-11,20:01:18
-18,Construction,Severe,Inaccessible,,,,,491 Freni Ct San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-11,20:13:38
+1,Uneven Pavement,Low,Moderately Accessible,,,,,451 Shadow Rock Ct San Jose CA,,,,,In Progress,,2024-11-09,17:11:22
+2,Uneven Pavement ,Low,Easily Accessible,,,,,451 Shadow Rock Ct San Jose,,,,,In Progress,,2024-11-09,17:44:09
+3,Construction,High,Inaccessible,,,,,664 N Capitol Ave San Jose ,,,uploaded_images/construction.jpeg,,Not Started,,2024-11-10,10:26:56
+4,Pothole,Low,Easily Accessible,,,,,664 N Capitol Ave San Jose,,,,,Not Started,,2024-11-10,10:34:10
+5,Pothole,Low,Easily Accessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,10:48:02
+6,Uneven Pavement,Low,Easily Accessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,11:01:56
+7,Construction,Severe,Inaccessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/construction.jpeg,,Not Started,,2024-11-10,11:21:58
+8,Construction,Severe,Inaccessible,,,,,664 Capital Ave San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-10,11:44:56
+9,Uneven Pavement,Severe,Inaccessible,,,,,451 Shadow Rock Ct San Jose,,,uploaded_images/image.png,,Completed,,2024-11-11,13:40:20
+10,Uneven Pavement ,Low,Moderately Accessible,,,,,2131 Monterey Rd San Jose CA,,,uploaded_images/image.png,,Completed,,2024-11-11,14:32:12
+11,Construction ,Moderate,Moderately Accessible,,,,,688 Enright Ave Santa Clara,,,uploaded_images/construction.jpeg,,Completed,,2024-11-11,18:45:17
+12,Construction,High,Inaccessible,,,,,451 Shadow Rock Ct San Jose,,,uploaded_images/construction.jpeg,,Completed,,2024-11-11,19:43:47
+13,Pothole,Moderate,Moderately Accessible,,,,,451 Shadow Rock Ct San Jose,,,uploaded_images/construction.jpeg,,In Progress,,2024-11-11,20:01:18
+14,Construction,Severe,Inaccessible,,,,,491 Freni Ct San Jose CA,,,uploaded_images/construction.jpeg,,Completed,,2024-11-11,20:13:38
